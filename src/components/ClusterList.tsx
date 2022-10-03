@@ -1,6 +1,6 @@
 import {Cluster} from "../types/Cluster";
 import * as api from "../apis/cluster";
-import { Dispatch } from "react";
+import React, { Dispatch } from "react";
 
 export const ClusterList = ({
     clusterList,
@@ -23,13 +23,27 @@ export const ClusterList = ({
         });
     };
 
+    const handleClusterPowerButton = (event: React.MouseEvent<HTMLElement>) => {
+        let clusterId = event.currentTarget.getAttribute('data-cluster-id');
+        if (clusterId !== null) {
+            api.startCluster(clusterId).then((data) => {
+                console.log(data);
+            });
+        }
+    };
+
     return (
         <>
             <button onClick={handleClusterListButton}>List Clusters</button>
-            <ul>
+            <ul className="cluster">
                 {clusterList.map((cluster) => (
-                    <li>
-                        {cluster.id}
+                    <li className="cluster-item">
+                        <div className="cluster-item__name">
+                            {cluster.id}
+                        </div>
+                        <div className="cluster-item__button">
+                            <button onClick={handleClusterPowerButton} data-cluster-id={cluster.id}></button>
+                        </div>
                     </li>
                 ))}
             </ul>

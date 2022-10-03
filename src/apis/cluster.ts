@@ -18,3 +18,9 @@ export const stopCluster = async (clusterId: string) => {
     const response = await axios.post(url);
     return response.data;
 };
+
+export const getClusterStatus = async (clusterId: string) => {
+    const url = `${API_GATEWAY_URL}/${clusterId}`;
+    const response = await axios.post(url);
+    return response.data;
+}

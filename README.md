@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+```bash
+# for Web server access
+aws ssm start-session --target i-05f14ad079c517894 --parameters "portNumber=3000,localPortNumber=3000" --document-name AWS-StartPortForwardingSession
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# for API server access
+aws ssm start-session --target i-05f14ad079c517894 --parameters "portNumber=3001,localPortNumber=30001" --document-name AWS-StartPortForwardingSession
+```
+
 
 ## Available Scripts
 

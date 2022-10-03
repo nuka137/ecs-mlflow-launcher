@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_GATEWAY_URL = "";
+const API_GATEWAY_URL = "http://localhost:30001";
 
 export const getAllClusters = async () => {
-    const response = await axios.get(API_GATEWAY_URL);
+    const response = await axios.get(`${API_GATEWAY_URL}`);
     return response.data;
 };
 

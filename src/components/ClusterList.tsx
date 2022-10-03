@@ -11,7 +11,15 @@ export const ClusterList = ({
 }) => {
     const handleClusterListButton = () => {
         api.getAllClusters().then((data) => {
-            setClusterList([{id: "HOGE"}]);
+            console.log(data);
+            let instances = data["instanceIds"];
+            let clusterList = [];
+            for (let i = 0; i < instances.length; ++i) {
+                clusterList.push({
+                    id: instances[i]
+                });
+            }
+            setClusterList(clusterList);
         });
     };
 

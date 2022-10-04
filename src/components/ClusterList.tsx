@@ -33,24 +33,26 @@ export const ClusterList = ({
         }
     };
 
-    function Clock() {
-        const [now, setNow] = React.useState(new Date());
+    function UpdateClusterList() {
         React.useEffect(() => {
             const intervalId = setInterval(() => {
-                setNow(new Date());
+                api.getAllClusters().then((data) => {
+                    console.log(data);
+                    let instances = data["instanceIds"];
+                    let clusterList = [];
+                    for (let i = 0; i < instances.length; ++i) {
+                        clusterList.push({
+                            id: instances[i]["InstanceId"],
+                            state: instances[i]["State"]
+                        });
+                    }
+                    setClusterList(clusterList);
+                });
             }, 1000);
             return () => { clearInterval(intervalId); }
-        }, [now]);
+        });
 
         return (
-            <div>{now.toString()}</div>
-        );
-    }
-
-    return (
-        <>
-            <button onClick={handleClusterListButton}>List Clusters</button>
-            <Clock />
             <ul className="cluster">
                 {clusterList.map((cluster) => (
                     <li className="cluster-item">
@@ -65,6 +67,13 @@ export const ClusterList = ({
                     </li>
                 ))}
             </ul>
+        );
+    }
+
+    return (
+        <>
+            <button onClick={handleClusterListButton}>List Clusters</button>
+            <UpdateClusterList />
         </>
     );
 };

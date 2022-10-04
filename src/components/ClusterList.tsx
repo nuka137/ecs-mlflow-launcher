@@ -17,7 +17,7 @@ export const ClusterList = ({
             for (let i = 0; i < instances.length; ++i) {
                 clusterList.push({
                     id: instances[i]["InstanceId"],
-                    status: instances[i]["Status"]
+                    state: instances[i]["State"]
                 });
             }
             setClusterList(clusterList);
@@ -44,7 +44,7 @@ export const ClusterList = ({
                         </div>
                         <div className="cluster-item__button">
                             <button onClick={handleClusterPowerButton} data-cluster-id={cluster.id}>
-                                {cluster.status}
+                                {cluster.state}
                             </button>
                         </div>
                     </li>

@@ -11,7 +11,6 @@ export const ClusterList = ({
 }) => {
     const handleClusterListButton = () => {
         api.getAllClusters().then((data) => {
-            console.log(data);
             let instances = data["instanceIds"];
             let clusterList = [];
             for (let i = 0; i < instances.length; ++i) {
@@ -27,17 +26,45 @@ export const ClusterList = ({
     const handleClusterPowerButton = (event: React.MouseEvent<HTMLElement>) => {
         let clusterId = event.currentTarget.getAttribute('data-cluster-id');
         if (clusterId !== null) {
-            api.startCluster(clusterId).then((data) => {
-                console.log(data);
-            });
+            for (let i = 0; i < clusterList.length; ++i) {
+                if (clusterList[i].id != clusterId) {
+                    continue;
+                }
+                if (clusterList[i].state === "stopped") {
+                    api.startCluster(clusterId).then((data) => {
+                        console.log(data);
+                    });
+                } else {
+                    api.stopCluster(clusterId).then((data) => {
+                        console.log(data);
+                    });
+                }
+            }
         }
     };
+
+    type Props = {
+        cluster: Cluster
+    }
+
+    function GetButtonLabel(props: Props) {
+        return (
+            <>
+                { (() => {
+                    if (props.cluster.state === "stopped") {
+                        <p>Power on</p>
+                    } else {
+                        <p>Power off</p>
+                    }
+                })() }
+            </>
+        );
+    }
 
     function UpdateClusterList() {
         React.useEffect(() => {
             const intervalId = setInterval(() => {
                 api.getAllClusters().then((data) => {
-                    console.log(data);
                     let instances = data["instanceIds"];
                     let clusterList = [];
                     for (let i = 0; i < instances.length; ++i) {
@@ -61,7 +88,7 @@ export const ClusterList = ({
                         </div>
                         <div className="cluster-item__button">
                             <button onClick={handleClusterPowerButton} data-cluster-id={cluster.id}>
-                                {cluster.state}
+                                <GetButtonLabel cluster={cluster} />
                             </button>
                         </div>
                     </li>

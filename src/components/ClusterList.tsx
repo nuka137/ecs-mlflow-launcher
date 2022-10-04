@@ -49,16 +49,15 @@ export const ClusterList = ({
 
     function GetButtonLabel(props: Props) {
         console.log(props);
+
+        if (props.cluster.state === "stopped") {
+            return (
+                <>Power On</>
+            );
+        }
+
         return (
-            <>
-                { (() => {
-                    if (props.cluster.state === "stopped") {
-                        <p>Power on</p>
-                    } else {
-                        <p>Power off</p>
-                    }
-                })() }
-            </>
+            <>Power Off</>
         );
     }
 

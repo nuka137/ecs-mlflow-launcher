@@ -48,6 +48,7 @@ export const ClusterList = ({
     }
 
     function GetButtonLabel(props: Props) {
+        console.log(props);
         return (
             <>
                 { (() => {

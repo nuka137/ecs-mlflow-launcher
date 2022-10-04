@@ -33,9 +33,24 @@ export const ClusterList = ({
         }
     };
 
+    function Clock() {
+        const [now, setNow] = React.useState(new Date());
+        React.useEffect(() => {
+            const intervalId = setInterval(() => {
+                setNow(new Date());
+            }, 1000);
+            return () => { clearInterval(intervalId); }
+        }, [now]);
+
+        return (
+            <div>{now.toString()}</div>
+        );
+    }
+
     return (
         <>
             <button onClick={handleClusterListButton}>List Clusters</button>
+            <Clock />
             <ul className="cluster">
                 {clusterList.map((cluster) => (
                     <li className="cluster-item">

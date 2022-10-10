@@ -1,6 +1,8 @@
 import {Cluster} from "../types/Cluster";
 import * as api from "../apis/cluster";
 import React, { Dispatch } from "react";
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 
 export const ClusterList = ({
     clusterList,
@@ -47,18 +49,24 @@ export const ClusterList = ({
         cluster: Cluster
     }
 
-    function GetButtonLabel(props: Props) {
-        console.log(props);
-
+    function GetButton(props: Props) {
         if (props.cluster.state === "stopped") {
             return (
-                <>Power On</>
+                <Button variant="outline-success" onClick={handleClusterPowerButton} data-cluster-id={props.cluster.id}>
+                    Start
+                </Button>
+            );
+        } else if (props.cluster.state === "running") {
+            return (
+                <Button variant="danger" onClick={handleClusterPowerButton} data-cluster-id={props.cluster.id}>
+                    Stop
+                </Button>
+            );
+        } else {
+            return (
+                <Button variant="secondary">...</Button>
             );
         }
-
-        return (
-            <>Power Off</>
-        );
     }
 
     function UpdateClusterList() {
@@ -80,26 +88,29 @@ export const ClusterList = ({
         });
 
         return (
-            <ul className="cluster">
-                {clusterList.map((cluster) => (
-                    <li className="cluster-item">
-                        <div className="cluster-item__name">
-                            {cluster.id}
-                        </div>
-                        <div className="cluster-item__button">
-                            <button onClick={handleClusterPowerButton} data-cluster-id={cluster.id}>
-                                <GetButtonLabel cluster={cluster} />
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Instance ID</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {clusterList.map((cluster) => (
+                        <tr>
+                            <td>{cluster.id}</td>
+                            <td><GetButton cluster={cluster} /></td>
+                        </tr>
+                    ))}
+
+                </tbody>
+            </Table>
         );
     }
 
     return (
         <>
-            <button onClick={handleClusterListButton}>List Clusters</button>
+            <Button onClick={handleClusterListButton}>List Clusters</Button>
             <UpdateClusterList />
         </>
     );
